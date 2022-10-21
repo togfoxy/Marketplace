@@ -3,6 +3,24 @@ marketplace = {}
 local bidtable = {}
 local asktable = {}
 
+function marketplace.determineBeliefRange(commodityKnowledge)
+
+    local minprice = nil
+    local maxprice = nil
+
+    for i = 1, #commodityKnowledge do
+        local historicprice = commodityKnowledge[i]
+        if minprice == nil or historicprice < minprice then
+            minprice = historicprice
+        end
+        if maxprice == nil or historicprice > maxprice then
+            maxprice = historicprice
+        end
+    end
+    return minprice,maxprice
+end
+
+
 function marketplace.determineBidQty(commodity, maxQty, commodityKnowledge)
     -- given commodity knowledge return the bid qty for stated commodity
 
@@ -19,7 +37,7 @@ function marketplace.determineBidQty(commodity, maxQty, commodityKnowledge)
         return maxQty / 2
     end
     countprice = #commodityKnowledge
-    
+
     for i = 1, #commodityKnowledge do
         local historicprice = commodityKnowledge[i]
         if minprice == nil or historicprice < minprice then
