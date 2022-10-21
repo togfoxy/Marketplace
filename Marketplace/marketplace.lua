@@ -3,21 +3,12 @@ marketplace = {}
 local bidtable = {}
 local asktable = {}
 
-function marketplace.determineBeliefRange(commodityKnowledge)
+function marketplace.determineBidPrice(beliefRange)
 
-    local minprice = nil
-    local maxprice = nil
-
-    for i = 1, #commodityKnowledge do
-        local historicprice = commodityKnowledge[i]
-        if minprice == nil or historicprice < minprice then
-            minprice = historicprice
-        end
-        if maxprice == nil or historicprice > maxprice then
-            maxprice = historicprice
-        end
-    end
-    return minprice,maxprice
+    local min = beliefRange[1]
+    local max = beliefRange[2]
+    assert(min <= max)
+    return love.math.random(min, max)       --! only does whole numbers
 end
 
 
