@@ -9,6 +9,13 @@ inspect = require 'lib.inspect'
 cf = require 'lib.commonfunctions'
 require 'draw'
 
+function love.keyreleased( key, scancode )
+	if key == "return" then
+        processturn = true
+    end
+
+end
+
 
 function love.load()
 
@@ -63,6 +70,17 @@ end
 
 
 function love.update()
+
+    if processturn then
+        processturn = false
+        -- deduct one sugar from each person
+        for i = 1, #persons do
+            persons[i].inventory["sugar"] = persons[i].inventory["sugar"] - 1
+            if persons[i].inventory["sugar"] < 0 then persons[i].inventory["sugar"] = 0 end
+            table.insert(persons[i].inventoryHistory["sugar"], persons[i].inventory["sugar"])
+        end
+
+    end
 
 
 end

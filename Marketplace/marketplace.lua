@@ -11,7 +11,6 @@ function marketplace.determineBidPrice(beliefRange)
     return love.math.random(min, max)       --! only does whole numbers
 end
 
-
 function marketplace.determineBidQty(commodity, maxQty, commodityKnowledge)
     -- given commodity knowledge return the bid qty for stated commodity
 
