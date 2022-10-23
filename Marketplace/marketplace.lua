@@ -50,24 +50,7 @@ local function determineMeanWithinPriceRange(minprice, maxprice, meanprice)
     return (abovefloor / observedmeanrange)
 end
 
-function marketplace.determineAskQty(commodity, maxQty, commodityKnowledge)
-
-    if commodityKnowledge == nil then
-        -- No knowledge of this commodity. Play safe and just ask for half qty.
-        error("Complete this please!")
-        return something
-    end
-
-    local minprice
-    local maxprice
-    local meanprice
-
-    minprice, maxprice, meanprice = determineMeanPrice(commodityKnowledge)
-
-
-end
-
-function marketplace.determineBidQty(commodity, maxQty, commodityKnowledge)
+function marketplace.determineQty(commodity, maxQty, commodityKnowledge)
     -- given commodity knowledge return the bid qty for stated commodity
 
     -- commodity = item to buy
