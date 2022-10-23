@@ -3,6 +3,7 @@ constants = {}
 
 function constants.load()
 
+    persons = {}
     processturn = false
 
 
