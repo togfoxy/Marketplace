@@ -32,7 +32,6 @@ function love.update()
     if processturn then
         processturn = false
 
-
         for i = 1, #persons do
 			-- deduct one sugar from each person
             persons[i].inventory["sugar"] = persons[i].inventory["sugar"] - 1
@@ -50,7 +49,7 @@ function love.update()
 
 				-- determine bid quantity
 				local maxqtytobuy = 10 - persons[i].inventory["sugar"]
-				local bidqty = marketplace.determineBidQty("sugar", maxqtytobuy, persons[i].commodityKnowledge["sugar"]) -- commodity, maxQty, commodityKnowledge
+				local bidqty = marketplace.determineQty("sugar", maxqtytobuy, persons[i].commodityKnowledge["sugar"]) -- commodity, maxQty, commodityKnowledge
 				bidqty = cf.round(bidqty)
 
 				-- determine bid price which is a rndnum in belief range
@@ -65,23 +64,17 @@ function love.update()
 				-- make an ask
 
 				-- determine ask quantity
-
+				local maxqtytosell = persons[i].inventory["sugar"] - 5
+				local askqty = marketplace.determineQty("sugar", maxqtytosell, persons[i].commodityKnowledge["sugar"]) -- commodity, maxQty, commodityKnowledge
+				askqty = cf.round(askqty)
 
 				-- determine ask price
 				local askprice = marketplace.determineCommodityPrice(persons[i].beliefRange["sugar"])
 
 
 				-- register the ask
-				-- marketplace.createAsk("sugar", askqty, askprice, persons[i].guid)
-
-
+				marketplace.createAsk("sugar", askqty, askprice, persons[i].guid)
 			end
         end
-
-
-
-
     end
-
-
 end
