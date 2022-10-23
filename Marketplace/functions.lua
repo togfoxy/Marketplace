@@ -7,6 +7,11 @@ function functions.initialisePersons()
     for i = 1, numofpersons do
         local newperson = {}
         newperson.guid = cf.getUUID()
+        if love.math.random(1, 2) == 2 then
+            newperson.isProducer = true
+        else
+            newperson.isProducer = false
+        end
 
         newperson.commodityKnowledge = {}
         newperson.commodityKnowledge["sugar"] = {}
