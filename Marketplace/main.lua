@@ -17,55 +17,69 @@ function love.keyreleased( key, scancode )
 
 end
 
-
 function love.load()
 
     constants.load()        -- loads globals and constants
-
 	fun.initialisePersons()		-- set up a bunch of random person objects
-
-
-
-	local maxqtytobuy = 10 - persons[1].inventory["sugar"]
-
-    local bidqty = marketplace.determineBidQty("sugar", maxqtytobuy, persons[1].commodityKnowledge["sugar"]) -- commodity, maxQty, commodityKnowledge
-    bidqty = cf.round(bidqty)
-
-    -- need to determine bidprice which is a rndnum in belief range
-    bidprice = marketplace.determineBidPrice(persons[1].beliefRange["sugar"])
-
-    marketplace.createBid("sugar", bidqty, bidprice, "Fox")
-    print("Fox made a bid for sugar. Preferred qty = " .. bidqty .. " at price $" .. bidprice)
-
-
-
-
-    marketplace.createAsk("sugar", 7, 156, "Fred")
-    marketplace.createAsk("wheat", 2, 100, "Samual")
-
-
-
 end
 
 function love.draw()
-
     draw.allInventory(100)      -- number is the y value down the screen
-
-
-
 end
-
 
 function love.update()
 
     if processturn then
         processturn = false
-        -- deduct one sugar from each person
+
+
         for i = 1, #persons do
+			-- deduct one sugar from each person
             persons[i].inventory["sugar"] = persons[i].inventory["sugar"] - 1
             if persons[i].inventory["sugar"] < 0 then persons[i].inventory["sugar"] = 0 end
             table.insert(persons[i].inventoryHistory["sugar"], persons[i].inventory["sugar"])
+
+			-- add sugar if person is a producer
+			if persons[i].isProducer then
+				persons[i].inventory["sugar"] = persons[i].inventory["sugar"] + love.math.random(0,2)
+			end
+
+			-- make bids as appropriate
+			if persons[i].inventory["sugar"] < 5 then
+				-- make a bid	--! might need to wrap this up in a function
+
+				-- determine bid quantity
+				local maxqtytobuy = 10 - persons[i].inventory["sugar"]
+				local bidqty = marketplace.determineBidQty("sugar", maxqtytobuy, persons[i].commodityKnowledge["sugar"]) -- commodity, maxQty, commodityKnowledge
+				bidqty = cf.round(bidqty)
+
+				-- determine bid price which is a rndnum in belief range
+				local bidprice = marketplace.determineCommodityPrice(persons[i].beliefRange["sugar"])
+
+				-- register the bid
+				marketplace.createBid("sugar", bidqty, bidprice, persons[i].guid)
+				print("Person made a bid for sugar. Preferred qty = " .. bidqty .. " at price $" .. bidprice)
+			end
+
+			if persons[i].inventory["sugar"] > 10 then
+				-- make an ask
+
+				-- determine ask quantity
+
+
+				-- determine ask price
+				local askprice = marketplace.determineCommodityPrice(persons[i].beliefRange["sugar"])
+
+
+				-- register the ask
+				-- marketplace.createAsk("sugar", askqty, askprice, persons[i].guid)
+
+
+			end
         end
+
+
+
 
     end
 
