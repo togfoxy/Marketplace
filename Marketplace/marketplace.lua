@@ -23,7 +23,7 @@ function marketplace.determineBidQty(commodity, maxQty, commodityKnowledge)
     local sumprice = 0      -- to determine average
     local countprice = 0
     if commodityKnowledge == nil then
-        -- know history. Play safe and just ask for half
+        -- No knowledge of this commodity. Play safe and just ask for half qty.
         return maxQty / 2
     end
     countprice = #commodityKnowledge
@@ -38,20 +38,23 @@ function marketplace.determineBidQty(commodity, maxQty, commodityKnowledge)
         end
         sumprice = sumprice + historicprice
     end
-    local meanprice = sumprice / countprice
-    -- print("Mean price = " .. meanprice)
+    local meanprice
+    if countprice == 0 then
+        meanprice = 5       --! might need to build in a default average at some point
+    else
+        meanprice = sumprice / countprice
+    end
 
     -- determine where the mean sits in the observed range
-    local observedmeanrange = maxprice - minprice
+    local observedmeanrange
+    if maxprice == nil then maxprice = 10 end
+    if minprice == nil then minprice = 1 end
+    observedmeanrange = maxprice - minprice
     if observedmeanrange == 0 then observedmeanrange = 1 end
-    -- print("Observed range of mean = " .. observedmeanrange)
     local abovefloor = meanprice - minprice
-    -- print("Above floor = " .. abovefloor)
     local percent = abovefloor / observedmeanrange
     -- flip the percent to get favourability
-    -- print("percent = " .. percent)
     local favourability = 1 - percent
-    -- print("Fav = " .. favourability)
     return favourability * maxQty
 end
 
