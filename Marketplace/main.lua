@@ -61,7 +61,7 @@ function love.update()
 			end
 
 			-- make an ask if appropriate
-			if persons[i].inventory["sugar"] > 10 then
+			if persons[i].inventory["sugar"] > 6 then
 				-- determine ask quantity
 				local maxqtytosell = persons[i].inventory["sugar"] - 5
 				local askqty = marketplace.determineQty("sugar", maxqtytosell, persons[i].commodityKnowledge["sugar"]) -- commodity, maxQty, commodityKnowledge

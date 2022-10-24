@@ -116,10 +116,10 @@ end
 
 function marketplace.resolveOrders()
     print("**********************")
-    print("All bids:")
-    print(inspect(bidtable))
-    print("All asks:")
-    print(inspect(asktable))
+    -- print("All bids:")
+    -- print(inspect(bidtable))
+    -- print("All asks:")
+    -- print(inspect(asktable))
 
     if bidtable[1] == nil or asktable[1] == nil then
         -- print("Not enough buys/sellers. Nothing to do.")
@@ -127,20 +127,44 @@ function marketplace.resolveOrders()
 
     end
 
-    -- print("---------------")
+
     for k, commodity in pairs(bidtable) do
         -- print(inspect(commodity))
-        table.sort(commodity, function(k1, k2) return k1[2] < k2[2] end)
+        table.sort(commodity, function(k1, k2) return k1[2] > k2[2] end)
         -- print(inspect(commodity))
         -- print("#############")
     end
 
     for k, commodity in pairs(asktable) do
         table.sort(commodity, function (k1, k2) return k1[2] < k2[2] end)
-        print(inspect(commodity))
+        -- print(inspect(commodity))
     end
 
-    print(inspect(asktable))
+    -- print(inspect(bidtable))
+    -- print(inspect(bidtable["sugar"]))
+
+    for commodity, commoditybook in pairs(bidtable) do
+        -- print(commodity, inspect(commoditybook))
+
+        for k, v in pairs(commoditybook) do
+            print("*******************")
+            print("* " .. commodity)
+            print("*******************")
+
+            local bidprice = bidtable[commodity][1][2]
+            print("Bid price is $" .. bidprice)
+            local askprice = asktable[commodity][1][2]
+            print("Ask price is $" .. askprice)
+
+            if bidprice >= askprice then
+                print("Trade successful!")
+            else
+                print("Trade fails")
+            end
+
+            error()
+        end
+    end
 
 end
 
