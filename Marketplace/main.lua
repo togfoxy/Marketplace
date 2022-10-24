@@ -57,12 +57,11 @@ function love.update()
 
 				-- register the bid
 				marketplace.createBid("sugar", bidqty, bidprice, persons[i].guid)
-				print("Person made a bid for sugar. Preferred qty = " .. bidqty .. " at price $" .. bidprice)
+				-- print("Person made a bid for sugar. Preferred qty = " .. bidqty .. " at price $" .. bidprice)
 			end
 
+			-- make an ask if appropriate
 			if persons[i].inventory["sugar"] > 10 then
-				-- make an ask
-
 				-- determine ask quantity
 				local maxqtytosell = persons[i].inventory["sugar"] - 5
 				local askqty = marketplace.determineQty("sugar", maxqtytosell, persons[i].commodityKnowledge["sugar"]) -- commodity, maxQty, commodityKnowledge
@@ -71,10 +70,16 @@ function love.update()
 				-- determine ask price
 				local askprice = marketplace.determineCommodityPrice(persons[i].beliefRange["sugar"])
 
-
 				-- register the ask
 				marketplace.createAsk("sugar", askqty, askprice, persons[i].guid)
 			end
+
         end
+
+		-- resolve bids/asks after all persons have had a chance to update orders
+		marketplace.resolveOrders()
+
+		-- adjust beliefs
+
     end
 end
