@@ -2,7 +2,7 @@ functions = {}
 
 function functions.initialisePersons()
 
-    local numofpersons = 10
+    local numofpersons = 20
 
     for i = 1, numofpersons do
         local newperson = {}
@@ -28,9 +28,5 @@ function functions.initialisePersons()
         table.insert(persons, newperson)
     end
 end
-
-
-
-
 
 return functions
